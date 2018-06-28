@@ -1,12 +1,11 @@
 {
     "name": "foggle-redux",
     "version": "0.0.0",
-    "main": "build/index.js",
+    "main": "build/foggle/index.js",
     "authro": "buschtoensm@ergovia.de",
     "license": "ISC",
     "scripts": {
-        "build": "./node_modules/grunt/bin/grunt build",
-        "sonar": "./node_modules/sonar-web-frontend-reporters/bin/sreporter"
+        "build": "./node_modules/grunt/bin/grunt build"
     },
     "dependencies": {
         "react": "16.3.0",
@@ -31,7 +30,6 @@
         "grunt-contrib-clean": "1.1.0",
         "grunt-contrib-copy": "1.0.0",
         "load-grunt-tasks": "3.5.2",
-        "prop-types": "15.6.2",
-        "sonar-web-frontend-reporters": "3.3.0"
+        "prop-types": "15.6.2"
     }
 }
