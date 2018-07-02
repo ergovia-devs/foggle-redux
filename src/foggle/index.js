@@ -1,8 +1,7 @@
 import React from 'react';
 import {connect, createProvider} from 'react-redux';
-import {applyMiddleware, createStore, bindActionCreators} from 'redux';
+import {applyMiddleware, bindActionCreators, createStore} from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import isBefore from 'date-fns/is_before'
 import reducer from './state/reducer'
 import {checkFeatures} from "./state/actions";
 import PropTypes from 'prop-types';
@@ -208,7 +207,7 @@ export class FoggleConsumer extends React.Component {
                     value => {
                         const found = value.features.enabledFeatures.find(feature => feature.id === id);
                         if (found) {
-                            return (found.manually_activated || isBefore(found.release_date, new Date())) ? children : null;
+                            return children;
                         }
                         return null;
 
@@ -250,7 +249,7 @@ export function withFoggle(Component, featureId, mapStateToProps, mapDispatchToP
 
                             const found = value.features.enabledFeatures.find(feature => feature.id === featureId);
                             if (found) {
-                                return found.manually_activated || isBefore(found.release_date, new Date()) ? <Component {...this.props} {...this.boundActionCreators}/> : null;
+                                return <Component {...this.props} {...this.boundActionCreators}/>;
                             }
 
                             return null;

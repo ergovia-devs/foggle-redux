@@ -14,7 +14,7 @@ const updateFeatures = json => ({
 export const checkFeatures = (url, headers) => dispatch => {
 
     fetch(`${url}`, { headers, mode: 'cors' })
-        .then(response => response.ok ? response.json() : Promise.resolve({enabledFeatures: []}))
+        .then(response => response.ok ? response.json() : { enabledFeatures: [] })
         .then(json => dispatch(updateFeatures(json)))
         .catch(console.error)
 
