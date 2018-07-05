@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "main": "build/foggle/index.js",
     "authro": "buschtoensm@ergovia.de",
-    "license": "ISC",
+    "license": "GPL",
     "scripts": {
         "build": "./node_modules/grunt/bin/grunt build"
     },
