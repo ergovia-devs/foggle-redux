@@ -47,7 +47,7 @@ module.exports = function(grunt) {
                         expand: true,
                         cwd: 'src/',
                         src: '**/*.js',
-                        dest: 'build/'
+                        dest: 'dist/'
                     }
                 ]
 
@@ -65,7 +65,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         src: ['package.json'],
-                        dest: 'build/foggle/'
+                        dest: 'dist/foggle/'
                     }
                 ]
             }
