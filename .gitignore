@@ -2,7 +2,3 @@ node_modules/
 .idea
 *.iml
 build/
-reports/
-.pytest_cache/
-.venv/
-test/docker/__pycache__
