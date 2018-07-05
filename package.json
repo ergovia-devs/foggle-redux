@@ -1,8 +1,8 @@
 {
     "name": "foggle-redux",
-    "version": "0.0.0",
+    "version": "0.0.2",
     "main": "build/foggle/index.js",
-    "authro": "buschtoensm@ergovia.de",
+    "author": "buschtoensm@ergovia.de",
     "license": "GPL",
     "scripts": {
         "build": "./node_modules/grunt/bin/grunt build"
