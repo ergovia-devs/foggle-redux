@@ -66,7 +66,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var _React$createContext = _react2.default.createContext({
     enabledFeatures: []
 }),
-    ContextProvider = _React$createContext.Provider,
+    Provider = _React$createContext.Provider,
     Consumer = _React$createContext.Consumer;
 
 var FOGGLE_STORE_KEY = 'foggleStore';
@@ -84,16 +84,19 @@ var FOGGLE_STORE_KEY = 'foggleStore';
  * The configuration file for Foggle.
  *
  * @param {string} host required parameter to let Foggle know from where to fetch the enabled features
+ * @param {string} app required parameter to let Foggle know which name your app has. It is used to identify features across multiple apps
  * @return {FoggleOptions} an object with all configured options
  * @constructor
  */
-var FoggleConfig = exports.FoggleConfig = function FoggleConfig(host) {
+var FoggleConfig = exports.FoggleConfig = function FoggleConfig(host, app) {
 
     console.assert(host, 'Host not specified. Please pass a host to the FoggleConfig');
+    console.assert(app, 'AppName not specified. Please pass the app name to the FoggleConfig');
 
     var defaultOptions = {
         updateInterval: 1000 * 60 * 10,
         headers: {},
+        app: app,
         host: host
     };
 
@@ -116,6 +119,16 @@ var FoggleConfig = exports.FoggleConfig = function FoggleConfig(host) {
          */
         getHost: function getHost() {
             return defaultOptions.host;
+        },
+
+
+        /**
+         * Returns the configured app name for identifying modules.
+         *
+         * @return {string} the app name
+         */
+        getAppName: function getAppName() {
+            return defaultOptions.app;
         },
 
 
@@ -198,7 +211,7 @@ var _FoggleProvider = function (_React$Component) {
         value: function componentDidMount() {
 
             setInterval(function update() {
-                this.props.checkFeatures(this.props.config.getHost(), this.props.config.getHeaders());
+                this.props.checkFeatures(this.props.config.getHost(), this.props.config.getAppName(), this.props.config.getHeaders());
                 return update.bind(this);
             }.bind(this)(), this.props.config.getUpdateInterval());
         }
@@ -211,7 +224,7 @@ var _FoggleProvider = function (_React$Component) {
 
 
             return _react2.default.createElement(
-                ContextProvider,
+                Provider,
                 { value: { features: features } },
                 children
             );
@@ -286,6 +299,7 @@ FoggleProvider.propTypes = {
     config: _propTypes2.default.exact({
         getOptions: _propTypes2.default.func.isRequired,
         getHost: _propTypes2.default.func.isRequired,
+        getAppName: _propTypes2.default.func.isRequired,
         getUpdateInterval: _propTypes2.default.func.isRequired,
         getHeaders: _propTypes2.default.func.isRequired,
         addHeader: _propTypes2.default.func.isRequired,

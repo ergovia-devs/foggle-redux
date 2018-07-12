@@ -1,6 +1,6 @@
 {
     "name": "foggle-redux",
-    "version": "0.0.2",
+    "version": "0.1.0",
     "main": "dist/foggle/index.js",
     "author": "buschtoensm@ergovia.de",
     "license": "GPL-3.0-or-later",

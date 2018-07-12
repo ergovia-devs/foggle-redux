@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.checkFeatures = undefined;
 
-var _types = require("./types");
+var _types = require('./types');
 
 var updateFeatures = function updateFeatures(json) {
   return {
@@ -18,7 +18,10 @@ var updateFeatures = function updateFeatures(json) {
  * Asks the server for new features
  *
  * @param {string} url the url to fetch from
+ * @param {string} app the name of the app to identify features
  * @param {object} headers additional headers for the fetch request
+ *
+ * @return {Promise} the result of the fetch-request as promise
  */
 /**
  * This file is part of foggle-redux.
@@ -40,10 +43,10 @@ var updateFeatures = function updateFeatures(json) {
  *
  * (c) Copyright 2018 ergovia GmbH
  */
-var checkFeatures = exports.checkFeatures = function checkFeatures(url, headers) {
+var checkFeatures = exports.checkFeatures = function checkFeatures(url, app, headers) {
   return function (dispatch) {
 
-    fetch("" + url, { headers: headers, mode: 'cors' }).then(function (response) {
+    fetch('' + url + app, { headers: headers, mode: 'cors' }).then(function (response) {
       return response.ok ? response.json() : { enabledFeatures: [] };
     }).then(function (json) {
       return dispatch(updateFeatures(json));

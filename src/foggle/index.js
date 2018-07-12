@@ -26,7 +26,7 @@ import reducer from './state/reducer'
 import {checkFeatures} from "./state/actions";
 import PropTypes from 'prop-types';
 
-const {Provider: ContextProvider, Consumer} = React.createContext({
+const {Provider, Consumer} = React.createContext({
     enabledFeatures: []
 });
 
@@ -167,9 +167,9 @@ class _FoggleProvider extends React.Component {
         const {children, features} = this.props;
 
         return (
-            <ContextProvider value={{features}}>
+            <Provider value={{features}}>
                 {children}
-            </ContextProvider>
+            </Provider>
         );
     }
 }
@@ -219,6 +219,7 @@ FoggleProvider.propTypes = {
         getHost: PropTypes.func.isRequired,
         getAppName: PropTypes.func.isRequired,
         getUpdateInterval: PropTypes.func.isRequired,
+        setUpdateInterval: PropTypes.func.isRequired,
         getHeaders: PropTypes.func.isRequired,
         addHeader: PropTypes.func.isRequired,
         clearHeaders: PropTypes.func.isRequired
