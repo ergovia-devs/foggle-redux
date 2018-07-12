@@ -45,17 +45,20 @@ const FOGGLE_STORE_KEY = 'foggleStore';
  * The configuration file for Foggle.
  *
  * @param {string} host required parameter to let Foggle know from where to fetch the enabled features
+ * @param {string} app required parameter to let Foggle know which name your app has. It is used to identify features across multiple apps
  * @return {FoggleOptions} an object with all configured options
  * @constructor
  */
-export const FoggleConfig = (host) => {
+export const FoggleConfig = (host, app) => {
 
     console.assert(host, 'Host not specified. Please pass a host to the FoggleConfig');
+    console.assert(app, 'AppName not specified. Please pass the app name to the FoggleConfig');
 
     const defaultOptions = {
         updateInterval: 1000 * 60 * 10,
         headers: {},
-        host,
+        app,
+        host
     };
 
     return {
@@ -79,6 +82,15 @@ export const FoggleConfig = (host) => {
         },
 
         /**
+         * Returns the configured app name for identifying modules.
+         *
+         * @return {string} the app name
+         */
+        getAppName() {
+            return defaultOptions.app;
+        },
+
+        /**
          * getUpdateInterval returns the configured update interval in milliseconds. default is 600000ms (10 Minutes)
          *
          * @return {number} the interval
@@ -94,7 +106,7 @@ export const FoggleConfig = (host) => {
          */
         setUpdateInterval(interval) {
             if (isNaN(interval)) {
-                throw new Error('interval must be of type number')
+                throw new Error('interval must be of type number');
             }
             defaultOptions.updateInterval = interval;
         },
@@ -105,7 +117,7 @@ export const FoggleConfig = (host) => {
          * @return {object} an objects containing all headers
          */
         getHeaders() {
-            return { ...defaultOptions.headers }
+            return { ...defaultOptions.headers };
         },
 
         /**
@@ -117,7 +129,7 @@ export const FoggleConfig = (host) => {
         addHeader(name = '', value) {
 
             if (typeof key === 'object' && typeof value === 'undefined') {
-                defaultOptions.headers = { ...defaultOptions.headers, ...name}
+                defaultOptions.headers = { ...defaultOptions.headers, ...name};
 
             } else {
                 defaultOptions.headers[name] = value;
@@ -129,10 +141,10 @@ export const FoggleConfig = (host) => {
          * Clears all headers that are configured
          */
         clearHeaders() {
-            defaultOptions.headers = {}
-        },
+            defaultOptions.headers = {};
+        }
 
-    }
+    };
 
 };
 
@@ -144,9 +156,9 @@ class _FoggleProvider extends React.Component {
     componentDidMount() {
 
         setInterval(function update() {
-            this.props.checkFeatures(this.props.config.getHost(), this.props.config.getHeaders());
+            this.props.checkFeatures(this.props.config.getHost(), this.props.config.getAppName(), this.props.config.getHeaders());
             return update.bind(this);
-        }.bind(this)(), this.props.config.getUpdateInterval())
+        }.bind(this)(), this.props.config.getUpdateInterval());
 
     }
 
@@ -158,7 +170,7 @@ class _FoggleProvider extends React.Component {
             <ContextProvider value={{features}}>
                 {children}
             </ContextProvider>
-        )
+        );
     }
 }
 
@@ -168,7 +180,7 @@ class _FoggleProvider extends React.Component {
  */
 function connectExtended(mapStateToProps, mapDispatchToProps, mergeProps, options = {}) {
     options.storeKey = FOGGLE_STORE_KEY;
-    return connect(mapStateToProps, mapDispatchToProps, mergeProps, options)
+    return connect(mapStateToProps, mapDispatchToProps, mergeProps, options);
 }
 
 const FoggleContainer = connectExtended(({ features }) => ({ features }), { checkFeatures })(_FoggleProvider);
@@ -181,7 +193,7 @@ export class FoggleProvider extends React.Component {
     constructor(props) {
         super(props);
         this.provider = createProvider(FOGGLE_STORE_KEY);
-        this.store = createStore(reducer, applyMiddleware(thunkMiddleware))
+        this.store = createStore(reducer, applyMiddleware(thunkMiddleware));
     }
 
     render() {
@@ -205,6 +217,7 @@ FoggleProvider.propTypes = {
     config: PropTypes.exact({
         getOptions: PropTypes.func.isRequired,
         getHost: PropTypes.func.isRequired,
+        getAppName: PropTypes.func.isRequired,
         getUpdateInterval: PropTypes.func.isRequired,
         getHeaders: PropTypes.func.isRequired,
         addHeader: PropTypes.func.isRequired,

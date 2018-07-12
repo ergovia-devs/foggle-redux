@@ -18,7 +18,7 @@
  *
  * (c) Copyright 2018 ergovia GmbH
  */
-import {UPDATE_ENABLED_FEATURES} from "./types";
+import {UPDATE_ENABLED_FEATURES} from './types';
 
 const updateFeatures = json => ({
     type: UPDATE_ENABLED_FEATURES,
@@ -29,13 +29,16 @@ const updateFeatures = json => ({
  * Asks the server for new features
  *
  * @param {string} url the url to fetch from
+ * @param {string} app the name of the app to identify features
  * @param {object} headers additional headers for the fetch request
+ *
+ * @return {Promise} the result of the fetch-request as promise
  */
-export const checkFeatures = (url, headers) => dispatch => {
+export const checkFeatures = (url, app, headers) => dispatch => {
 
-    fetch(`${url}`, { headers, mode: 'cors' })
+    fetch(`${url}${app}`, { headers, mode: 'cors' })
         .then(response => response.ok ? response.json() : { enabledFeatures: [] })
         .then(json => dispatch(updateFeatures(json)))
-        .catch(console.error)
+        .catch(console.error);
 
 };
