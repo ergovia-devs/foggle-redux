@@ -22,8 +22,8 @@ import React from 'react';
 import {connect, createProvider} from 'react-redux';
 import {applyMiddleware, bindActionCreators, createStore} from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import reducer from './state/reducer'
-import {checkFeatures} from "./state/actions";
+import reducer from './state/reducer';
+import {checkFeatures} from './state/actions';
 import PropTypes from 'prop-types';
 
 const {Provider, Consumer} = React.createContext({
@@ -198,7 +198,9 @@ export class FoggleProvider extends React.Component {
 
     render() {
 
-        const {children, config = FoggleConfig() } = this.props;
+        const {children, config } = this.props;
+
+        console.assert(config, 'A FoggleConfig must be passed to the config property of FoggleProvvider')
 
         const ReduxProvider = this.provider;
 
